@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 function App() {
   const [accessToken, setAccessToken] = useState("");
+  const [pageIdStorage, setPageIdStorage] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const tempToken = searchParams.get("code");
 
@@ -37,6 +38,22 @@ function App() {
 
     const result = await response.json();
     console.log(result);
+    // setPageIdStorage(result)
+  }
+
+  const getPageInfo = async () => {
+    const response = await fetch("http://localhost:3001/page", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        accessToken,
+      }),
+    });
+
+    const result = await response.json();
+    console.log(result);
   }
 
   return (
@@ -44,6 +61,7 @@ function App() {
       <a href={authonticateUrl}>이동 하기</a>
       <button onClick={exchangeToken}>임시 토큰 교환해줘!!</button>
       <button onClick={getTokken}>페이지 정보줘!!</button>
+      <button onClick={getPageInfo}>페이지 정보줘~~!!!</button>
     </div>
   );
 }
